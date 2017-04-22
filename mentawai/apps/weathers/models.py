@@ -37,4 +37,4 @@ class Weather(models.Model):
     objects = models.Manager.from_queryset(WeatherQuerySet)()
 
     def __unicode__(self):
-        return self.date
+        return str(self.date)

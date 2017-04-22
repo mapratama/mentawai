@@ -19,4 +19,4 @@ class Banner(models.Model):
     objects = models.Manager.from_queryset(BannerQuerySet)()
 
     def __unicode__(self):
-        return self.id
+        return str(self.id)

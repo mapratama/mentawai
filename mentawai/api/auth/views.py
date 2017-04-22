@@ -18,7 +18,14 @@ class Login(MentawaiAPIView):
         form = AuthenticationForm(data=request.data)
         if form.is_valid():
             login(request, form.get_user())
-            return Response(success_response(request.user, request.session.session_key),
+            user = request.user
+
+            push_notification_key = request.data.get('push_notification_key')
+            if push_notification_key:
+                user.push_notification_key = push_notification_key
+                user.save(update_fields=['push_notification_key'])
+
+            return Response(success_response(user, request.session.session_key),
                             status=status.HTTP_200_OK)
         return ErrorResponse(form=form)
 

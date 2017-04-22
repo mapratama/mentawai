@@ -18,6 +18,7 @@ class Transportation(models.Model):
     TYPE = Choices(
         (1, 'kapal_feri', 'Kapal Feri'),
         (2, 'pesawat', 'Pesawat'),
+        (3, 'kapal_antar_pulau', 'Kapal Antar Pulau'),
     )
 
     type = models.PositiveSmallIntegerField('Tipe', choices=TYPE)
@@ -35,6 +36,7 @@ class Transportation(models.Model):
 
     photo = ImageField(upload_to=FilenameGenerator(prefix='transportation-photo'),
                        default='', blank=True)
+    phone = models.CharField(max_length=20, blank=True, null=True)
 
     departure_time = models.TimeField('Waktu Keberangkatan', blank=True, null=True)
     arrived_time = models.TimeField('Waktu Tiba', blank=True, null=True)

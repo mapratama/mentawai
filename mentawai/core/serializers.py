@@ -17,7 +17,7 @@ def serialize_user(user):
 def serialize_weather(weather):
     return {
         'id': weather.id,
-        'date': calendar.timegm(weather.date.utctimetuple()),
+        'date': weather.date.isoformat(),
         'description': weather.description,
         'temperature': weather.temperature,
         'humidity': weather.humidity,
@@ -113,6 +113,7 @@ def serialize_resort(resort):
     return {
         'id': resort.id,
         'name': resort.name,
+        'type': resort.type,
         'location': serialize_location(resort.location),
         'address': resort.address if resort.address else None,
         'website': resort.website if resort.website else None,
@@ -131,6 +132,7 @@ def serialize_transportation(transportation):
     return {
         'id': transportation.id,
         'name': transportation.name,
+        'phone': transportation.phone if transportation.phone else None,
         'type': transportation.type,
         'day': transportation.day,
         'departure_time': str(transportation.departure_time) if transportation.departure_time else None,

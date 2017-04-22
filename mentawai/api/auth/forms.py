@@ -15,7 +15,7 @@ class APIRegistrationForm(forms.Form):
     mobile_number = MobileNumberField()
     gender = forms.ChoiceField(choices=User.GENDER)
     birthday = forms.CharField()
-    gcm_key = forms.CharField(max_length=254, required=False)
+    push_notification_key = forms.CharField(max_length=254, required=False)
 
     def clean_email(self):
         email = self.cleaned_data['email']
@@ -55,7 +55,7 @@ class APIRegistrationForm(forms.Form):
             mobile_number=self.cleaned_data['mobile_number'],
             birthday=self.cleaned_data['birthday'],
             gender=self.cleaned_data['gender'],
-            gcm_key=self.cleaned_data['gcm_key'],
+            push_notification_key=self.cleaned_data['push_notification_key'],
         )
         user.set_password(self.cleaned_data['password'])
         user.save()

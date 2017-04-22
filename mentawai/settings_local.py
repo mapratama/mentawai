@@ -21,4 +21,4 @@ DATABASES = {
 
 RAVEN_CONFIG = {}
 
-HOST = "http://192.168.43.213:8000"
+HOST = "http://192.168.0.25:8000"

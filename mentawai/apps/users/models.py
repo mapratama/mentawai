@@ -40,7 +40,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email and password are required.
     """
     # Name, email and mobile needs to be case insensitive indexed in postgres
-    email = models.EmailField('Alamat Email', unique=True, null=True,
+    email = models.EmailField(unique=True, null=True,
                               max_length=254, db_index=True)
     name = models.CharField('Nama', max_length=255, blank=True)
     GENDER = Choices(
@@ -52,7 +52,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     mobile_number = models.CharField('Nomor Ponsel', max_length=30, unique=True,
                                      null=True, db_index=True, blank=True,
                                      validators=[validate_mobile_phone])
-    gcm_key = models.CharField(blank=True, default='', max_length=254)
+    push_notification_key = models.CharField(blank=True, default='', max_length=254)
     is_staff = models.BooleanField('staff status', default=False)
     is_active = models.BooleanField('aktif', default=True)
     date_joined = models.DateTimeField('Tanggal Terdaftar', default=timezone.now)

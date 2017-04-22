@@ -186,5 +186,3 @@ except ImportError:
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
-
-HOST = "http://192.168.0.14:8000"
