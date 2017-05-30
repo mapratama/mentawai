@@ -8,7 +8,7 @@ class UserAdmin(DjangoUserAdmin):
     #  for edit
     fieldsets = (
         (None, {'fields': ('email', 'name', 'mobile_number', 'password',
-                'gender', 'birthday', 'gcm_key')}),
+                'gender', 'birthday', 'push_notification_key')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser')}),
         ('Important dates', {'fields': ('date_joined',)}),
     )
