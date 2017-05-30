@@ -11,7 +11,7 @@ BASE_DIR = path.dirname(path.dirname(path.abspath(__file__)))
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'mentawai',
+        'NAME': 'mentawai_tour',
         'USER': 'postgres',
         'PASSWORD': 'anggacumi',
         'HOST': '',
@@ -21,4 +21,4 @@ DATABASES = {
 
 RAVEN_CONFIG = {}
 
-HOST = "http://192.168.0.25:8000"
+HOST = "http://192.168.0.11:8000"

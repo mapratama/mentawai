@@ -19,6 +19,20 @@ class JSONSingleTokenAuthentication(BaseAuthentication):
             raise exceptions.AuthenticationFailed("Invalid token")
 
 
+class MidtransSessionAuthentication(BaseAuthentication):
+    """
+    Authenticate using a session key for midtrans.
+    """
+
+    def authenticate(self, request):
+        auth = APISessionAuthentication()
+        user = auth.get_user(request.data['custom']['session_key'])
+        if not user:
+            raise exceptions.AuthenticationFailed('User not found in our database')
+
+        return (user, auth)
+
+
 class APISessionAuthentication(BaseAuthentication):
 
     def authenticate(self, request):

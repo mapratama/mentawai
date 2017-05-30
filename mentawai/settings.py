@@ -53,16 +53,10 @@ INSTALLED_APPS = (
     'django_extensions',
     'django_rq',
 
-    'mentawai.apps.banners',
-    'mentawai.apps.locations',
-    'mentawai.apps.newses',
-    'mentawai.apps.partners',
-    'mentawai.apps.resorts',
-    'mentawai.apps.tours',
-    'mentawai.apps.transportations',
+    'mentawai.apps.contents',
+    'mentawai.apps.photos',
+    'mentawai.apps.payment_histories',
     'mentawai.apps.users',
-    'mentawai.apps.waves',
-    'mentawai.apps.weathers',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -102,10 +96,10 @@ THUMBNAILS = {
             ],
             'POST_PROCESSORS': STANDARD_POST_PROCESSORS
         },
-        'size_600x300': {
+        'size_500x350': {
             'PROCESSORS': [
-                {'PATH': 'thumbnails.processors.resize', 'width': 600, 'height': 300, 'method': 'fill'},
-                {'PATH': 'thumbnails.processors.crop', 'width': 600, 'height': 300},
+                {'PATH': 'thumbnails.processors.resize', 'width': 500, 'height': 350, 'method': 'fill'},
+                {'PATH': 'thumbnails.processors.crop', 'width': 500, 'height': 350},
             ],
             'POST_PROCESSORS': STANDARD_POST_PROCESSORS
         },
@@ -142,6 +136,14 @@ CACHES = {
         }
     },
 }
+
+MIDTRANS_HEADERS = {
+    'content-type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': 'Basic VlQtc2VydmVyLU5pNUR4bWYyemdQWUJ3dzM4MEEybTV2ZDo='
+}
+MIDTRANS_SERVER_KEY = 'VT-server-tnh6lylWTHbcu1kZJYoKQmCj'
+MIDTRANS_BASE_URL = 'https://app.sandbox.midtrans.com/snap/v1/transactions'
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
