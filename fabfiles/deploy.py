@@ -150,7 +150,7 @@ def update_project(skip_test="true", target_dir='mentawai', init_module='systemd
     # compress_static()
     # copy_email_templates()
 
-    # init_module.restart("mentawai")
+    init_module.restart("mentawai")
     # if target_dir == 'mentawai':
     #     init_module.restart('rqworker')
         # init_module.restart('rqworker-elastic')
