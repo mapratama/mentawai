@@ -1,6 +1,7 @@
 from mentawai.api.response import ErrorResponse
 from mentawai.api.views import MentawaiAPIView, SessionAPIView
 from mentawai.core.utils import force_login
+from mentawai.core.serializers import serialize_user
 
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -8,8 +9,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from rest_framework import status
 from rest_framework.response import Response
 
-from .forms import APIRegistrationForm
-from .utils import success_response
+from .forms import RegistrationForm
 
 
 class Login(MentawaiAPIView):
@@ -25,21 +25,24 @@ class Login(MentawaiAPIView):
                 user.push_notification_key = push_notification_key
                 user.save(update_fields=['push_notification_key'])
 
-            return Response(success_response(user, request.session.session_key),
-                            status=status.HTTP_200_OK)
+            response = serialize_user(user)
+            response['session_key'] = request.session.session_key
+            return Response(response, status=status.HTTP_200_OK)
         return ErrorResponse(form=form)
 
 
 class Register(MentawaiAPIView):
 
     def post(self, request):
-        form = APIRegistrationForm(data=request.data)
+        form = RegistrationForm(data=request.data)
         if form.is_valid():
             user = form.save()
             force_login(request, user)
             request.session.create()
-            return Response(success_response(user, request.session.session_key),
-                            status=status.HTTP_200_OK)
+
+            response = serialize_user(user)
+            response['session_key'] = request.session.session_key
+            return Response(response, status=status.HTTP_200_OK)
         return ErrorResponse(form=form)
 
 

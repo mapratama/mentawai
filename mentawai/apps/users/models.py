@@ -17,7 +17,7 @@ class CustomUserManager(UserManager):
         """
 
         now = timezone.now()
-        user = self.model(email=email, is_active=True, is_staff=False,
+        user = self.model(email=email, is_active=True, is_tourist=True,
                           last_login=now, is_superuser=False,
                           date_joined=now, **extra_fields)
         if password:
@@ -28,7 +28,7 @@ class CustomUserManager(UserManager):
 
     def create_superuser(self, email, password, **extra_fields):
         user = self.create_user(email=email, password=password, **extra_fields)
-        user.is_staff = True
+        user.is_tourist = False
         user.is_active = True
         user.is_superuser = True
         user.save(using=self._db)
@@ -43,18 +43,20 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True, null=True,
                               max_length=254, db_index=True)
     name = models.CharField('Nama', max_length=255, blank=True)
+    nationaly = models.CharField('Kebangsaan', max_length=255, blank=True)
+    pasport_number = models.CharField('Nomor Paspor', max_length=255, blank=True)
     GENDER = Choices(
         (1, 'male', 'Male'),
         (2, 'female', 'Female'),
     )
     gender = models.PositiveSmallIntegerField('Jenis Kelamin', choices=GENDER, blank=True, null=True)
-    birthday = models.DateField('Tanggal Lahir', blank=True, null=True)
     mobile_number = models.CharField('Nomor Ponsel', max_length=30, unique=True,
                                      null=True, db_index=True, blank=True,
                                      validators=[validate_mobile_phone])
     push_notification_key = models.CharField(blank=True, default='', max_length=254)
-    is_staff = models.BooleanField('staff status', default=False)
-    is_active = models.BooleanField('aktif', default=True)
+    is_tourist = models.BooleanField('Turis', default=False)
+    is_staff = models.BooleanField(default=True)
+    is_active = models.BooleanField('Status aktif', default=True)
     date_joined = models.DateTimeField('Tanggal Terdaftar', default=timezone.now)
 
     objects = CustomUserManager()

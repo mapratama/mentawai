@@ -8,8 +8,8 @@ class UserAdmin(DjangoUserAdmin):
     #  for edit
     fieldsets = (
         (None, {'fields': ('email', 'name', 'mobile_number', 'password',
-                'gender', 'birthday', 'push_notification_key')}),
-        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser')}),
+                'gender', 'nationaly', 'pasport_number', 'push_notification_key')}),
+        ('Permissions', {'fields': ('is_active', 'is_tourist', 'is_superuser')}),
         ('Important dates', {'fields': ('date_joined',)}),
     )
     # for add
@@ -18,8 +18,8 @@ class UserAdmin(DjangoUserAdmin):
             'classes': ('wide',),
             'fields': ('email', 'password1', 'password2')}),
     )
-    list_display = ('email', 'name', 'is_staff')
-    list_filter = ('is_staff', 'is_superuser', 'is_active',)
+    list_display = ('email', 'name', 'nationaly')
+    list_filter = ('is_tourist', 'is_superuser', 'nationaly')
     search_fields = ('name', 'email')
     ordering = ('email',)
 

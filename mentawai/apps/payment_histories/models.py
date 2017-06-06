@@ -12,6 +12,7 @@ class PaymentHistory(models.Model):
         (3, 'failed', 'Failed'),
     )
     status = models.PositiveSmallIntegerField(choices=STATUS, default=STATUS.new)
+    number_of_visits = models.PositiveSmallIntegerField('Lama Kunjungan', default=15)
     value = models.FloatField()
     created = AutoCreatedField()
     payment_id = models.CharField(max_length=255, default='')

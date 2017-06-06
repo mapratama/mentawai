@@ -1,3 +1,5 @@
+import calendar
+
 from django.conf import settings
 
 
@@ -8,7 +10,19 @@ def serialize_user(user):
         'name': user.name,
         'mobile_number': user.mobile_number,
         'gender': user.gender,
-        'birthday': user.birthday.isoformat() if user.birthday else None,
+        'nationaly': user.nationaly,
+        'pasport_number': user.pasport_number,
+    }
+
+
+def serialize_payment(payment):
+    return {
+        'id': payment.id,
+        'status': payment.status,
+        'number_of_visits': payment.number_of_visits,
+        'value': payment.value,
+        'payment_id': payment.payment_id,
+        'created': calendar.timegm(payment.created.utctimetuple()),
     }
 
 

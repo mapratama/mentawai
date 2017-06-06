@@ -1,8 +1,7 @@
 from django.conf.urls import patterns, url
 
-from .views import Charge, Notification
+from .views import Pay
 
 urlpatterns = patterns('',
-    url(r'^charge$', Charge.as_view(), name='charge'),
-    url(r'^midtrans-notification$', Notification.as_view(), name='notification'),
+    url(r'^pay$', Pay.as_view(), name='pay'),
 )
