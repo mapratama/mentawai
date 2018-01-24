@@ -176,6 +176,10 @@ RQ_QUEUES = {
     }
 }
 
+DOKU_PAYMENT_URL = 'http://pay.doku.com/api/payment/paymentMip'
+DOKU_SHARED_KEY = '6bO15H7vizQP'
+DOKU_MERCHANT_ID = '4566'
+
 if 'test' in os.sys.argv:
     TEST = True
 else:
