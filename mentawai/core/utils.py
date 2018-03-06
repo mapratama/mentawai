@@ -54,15 +54,15 @@ def force_login(request, user):
     login(request, user)
 
 
-def create_word(amount, token, pairing_code, device_id):
-    return hashlib.sha1('%s%s%s%s%s%s%s' % (
+def create_word(amount, invoice, token, pairing_code, device_id):
+    return hashlib.sha1('%s%s%s%s%s%s%s%s' % (
         amount, settings.DOKU_MERCHANT_ID, settings.DOKU_SHARED_KEY,
-        '360', token, pairing_code, device_id)).hexdigest()
+        invoice, '360', token, pairing_code, device_id)).hexdigest()
 
 
-def charge_doku(data):
+def charge_doku(data, invoice):
     words = create_word(
-        data['res_amount'], data['res_token_id'],
+        data['res_amount'], invoice, data['res_token_id'],
         data['res_pairing_code'], data['res_device_id']
     )
 
@@ -72,21 +72,23 @@ def charge_doku(data):
         'req_mall_id': settings.DOKU_MERCHANT_ID,
         'req_chain_merchant': 'NA',
         'req_amount': data['res_amount'],
+        'req_trans_id_merchant': data['res_amount'],
         'req_words': words,
         'req_purchase_amount': data['res_amount'],
-        'req_trans_id_merchant': 'AXXX',
+        'req_trans_id_merchant': invoice,
         'req_request_date_time': current_time.strftime('%Y%m%d%H%I%S'),
         'req_currency': '360',
         'req_purchase_currency': '360',
         'req_session_id': hashlib.sha1(current_time.strftime('%Y%m%d%H%I%S')).hexdigest(),
         'req_name': data['res_name'],
-        'req_payment_channel': 'res_payment_channel',
-        'req_basket': '%s%s%s%s' % ('retribusi', data['res_amount'], '1', data['res_amount']),
+        'req_payment_channel': data['res_payment_channel'],
+        'req_basket': '%s,%s,%s,%s' % ('retribusi', data['res_amount'], '1', data['res_amount']),
         'req_address': 'Bogor',
         'req_email': data['res_data_email'],
         'req_token_id': data['res_token_id']
     }
 
-    response = requests.post(url=settings.DOKU_PAYMENT_URL, json=params)
+    params = str(params)
+    response = requests.post(url=settings.DOKU_PAYMENT_URL, data={'data': params})
 
     return response
