@@ -1,5 +1,8 @@
+import hashlib
 import os
+import requests
 
+from django.conf import settings
 from django.contrib.auth import login
 from django.template.defaultfilters import slugify
 from django.utils import timezone
@@ -49,3 +52,43 @@ def normalize_phone(number):
 def force_login(request, user):
     user.backend = 'django.contrib.auth.backends.ModelBackend'
     login(request, user)
+
+
+def create_word(amount, invoice, token, pairing_code, device_id):
+    return hashlib.sha1('%s%s%s%s%s%s%s%s' % (
+        amount, settings.DOKU_MERCHANT_ID, settings.DOKU_SHARED_KEY,
+        invoice, '360', token, pairing_code, device_id)).hexdigest()
+
+
+def charge_doku(data, invoice):
+    words = create_word(
+        data['res_amount'], invoice, data['res_token_id'],
+        data['res_pairing_code'], data['res_device_id']
+    )
+
+    current_time = timezone.localtime(timezone.now())
+
+    params = {
+        'req_mall_id': settings.DOKU_MERCHANT_ID,
+        'req_chain_merchant': 'NA',
+        'req_amount': data['res_amount'],
+        'req_trans_id_merchant': data['res_amount'],
+        'req_words': words,
+        'req_purchase_amount': data['res_amount'],
+        'req_trans_id_merchant': invoice,
+        'req_request_date_time': current_time.strftime('%Y%m%d%H%I%S'),
+        'req_currency': '360',
+        'req_purchase_currency': '360',
+        'req_session_id': hashlib.sha1(current_time.strftime('%Y%m%d%H%I%S')).hexdigest(),
+        'req_name': data['res_name'],
+        'req_payment_channel': data['res_payment_channel'],
+        'req_basket': '%s,%s,%s,%s' % ('retribusi', data['res_amount'], '1', data['res_amount']),
+        'req_address': 'Bogor',
+        'req_email': data['res_data_email'],
+        'req_token_id': data['res_token_id']
+    }
+
+    params = str(params)
+    response = requests.post(url=settings.DOKU_PAYMENT_URL, data={'data': params})
+
+    return response
