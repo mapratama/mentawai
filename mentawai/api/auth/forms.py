@@ -5,6 +5,7 @@ from mentawai.core.fields import MobileNumberField
 
 
 class RegistrationForm(forms.Form):
+    password = forms.CharField(max_length=255)
     email = forms.EmailField()
     name = forms.CharField(max_length=30)
     nationaly = forms.CharField(max_length=50)
@@ -41,5 +42,8 @@ class RegistrationForm(forms.Form):
             nationaly=self.cleaned_data['nationaly'],
             pasport_number=self.cleaned_data['pasport_number'],
         )
+
+        user.set_password(self.cleaned_data['password'])
+        user.save()
 
         return user
