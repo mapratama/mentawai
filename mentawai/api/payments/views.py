@@ -15,7 +15,7 @@ from .forms import PaymentForm
 class Pay(SessionAPIView):
 
     def post(self, request):
-        form = PaymentForm(data=request.data)
+        form = PaymentForm(data=request.data['response_sdk'])
         if form.is_valid():
             payment = form.save(request.user)
 
