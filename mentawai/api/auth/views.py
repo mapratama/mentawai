@@ -1,7 +1,7 @@
 from mentawai.api.response import ErrorResponse
 from mentawai.api.views import MentawaiAPIView, SessionAPIView
 from mentawai.core.utils import force_login
-from mentawai.core.serializers import serialize_user
+from mentawai.core.serializers import serialize_user, serialize_payment
 
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -27,6 +27,11 @@ class Login(MentawaiAPIView):
 
             response = serialize_user(user)
             response['session_key'] = request.session.session_key
+
+            payment = user.get_payment_active()
+            if payment:
+                response['payment'] = serialize_payment(payment)
+
             return Response(response, status=status.HTTP_200_OK)
         return ErrorResponse(form=form)
 

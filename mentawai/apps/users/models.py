@@ -1,9 +1,12 @@
+from datetime import timedelta
+
 from django.contrib.auth.models import (AbstractBaseUser, PermissionsMixin,
                                         UserManager)
 
 from django.db import models
 from django.utils import timezone
 
+from mentawai.apps.payment_histories.models import PaymentHistory
 from mentawai.core.validators import validate_mobile_phone
 
 from model_utils import Choices
@@ -72,6 +75,19 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self):
         return self.email
+
+    def get_payment_active(self):
+        payments = self.payment_histories.filter(status=PaymentHistory.STATUS.completed).order_by('-id')
+        for payment in payments:
+            max_date = (payment.created + timedelta(days=payment.number_of_visits))\
+                .replace(hour=0, minute=0, second=0, microsecond=0)
+            now = timezone.localtime(timezone.now())
+
+            if now <= max_date:
+                return payment
+                break
+
+        return None
 
 
 def cached_auth_preprocessor(user, request):
