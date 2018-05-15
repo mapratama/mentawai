@@ -1,3 +1,5 @@
+import json
+
 from mentawai.api.views import SessionAPIView
 from mentawai.api.response import ErrorResponse
 from mentawai.core.serializers import serialize_payment
@@ -20,7 +22,8 @@ class Pay(SessionAPIView):
             payment = form.save(request.user)
 
             try:
-                charge_doku(request.data['response_sdk'])
+                data = json.loads(request.data['response_sdk'])
+                charge_doku(data)
             except DokuPaymentError as error:
                 return ErrorResponse(error_description=error)
 
