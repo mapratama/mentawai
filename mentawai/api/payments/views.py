@@ -15,12 +15,12 @@ from .forms import PaymentForm
 class Pay(SessionAPIView):
 
     def post(self, request):
-        form = PaymentForm(data=request.data['response_sdk'])
+        form = PaymentForm(data=request.data)
         if form.is_valid():
             payment = form.save(request.user)
 
             try:
-                charge_doku(request.data)
+                charge_doku(request.data['response_sdk'])
             except DokuPaymentError as error:
                 return ErrorResponse(error_description=error)
 
