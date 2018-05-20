@@ -65,7 +65,7 @@ def create_word(amount, invoice, token, pairing_code, device_id):
         invoice, '360', token, pairing_code, device_id)).hexdigest()
 
 
-def charge_doku(data):
+def charge_doku(data, user):
     words = create_word(
         data['res_amount'], data['res_transaction_id'], data['res_token_id'],
         data['res_pairing_code'], data['res_device_id']
@@ -87,10 +87,10 @@ def charge_doku(data):
         'req_name': data['res_name'],
         'req_payment_channel': data['res_payment_channel'],
         'req_basket': '%s,%s,%s,%s' % ('retribusi', data['res_amount'], '1', data['res_amount']),
-        'req_address': 'Bogor',
+        'req_address': user.nationaly,
         'req_email': data['res_data_email'],
         'req_token_id': data['res_token_id'],
-        'req_mobile_phone': '0858194234321',
+        'req_mobile_phone': user.mobile_number,
     }
 
     params = json.dumps(params).strip(' ')

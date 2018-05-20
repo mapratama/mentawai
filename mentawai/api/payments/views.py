@@ -23,7 +23,7 @@ class Pay(SessionAPIView):
 
             try:
                 data = json.loads(request.data['response_sdk'])
-                charge_doku(data)
+                charge_doku(data, request.user)
             except DokuPaymentError as error:
                 return ErrorResponse(error_description=error)
 
