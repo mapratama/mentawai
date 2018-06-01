@@ -139,14 +139,6 @@ CACHES = {
     },
 }
 
-MIDTRANS_HEADERS = {
-    'content-type': 'application/json',
-    'Accept': 'application/json',
-    'Authorization': 'Basic VlQtc2VydmVyLU5pNUR4bWYyemdQWUJ3dzM4MEEybTV2ZDo='
-}
-MIDTRANS_SERVER_KEY = 'VT-server-tnh6lylWTHbcu1kZJYoKQmCj'
-MIDTRANS_BASE_URL = 'https://app.sandbox.midtrans.com/snap/v1/transactions'
-
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
 
